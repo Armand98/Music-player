@@ -9,6 +9,7 @@
         <title>Muzyka</title>
     </head>
     <body>
+        <h3 id="title"></h3>
         <audio id="dzwiek" autoplay>
             <source src="">
         </audio>
@@ -26,8 +27,9 @@
             var index = 0;
             var sound = document.getElementById("dzwiek");
             var songs = ["Bruno-Mars-Grenade.mp3", "Imagine-Dragons-Whatever-It-Takes.mp3", "Otilia-Bilionera.mp3", "Queen-Bohemian-Rhapsody.mp3", "Stevie-Wonder-I-Just-Called-To-Say-I-Love-You.mp3"];
+            var label = document.getElementById("title");
             sound.setAttribute('src', "muzyka/" + songs[0]);
-            
+            label.innerHTML = songs[0];
             function getRandomInt(min, max) {
                 min = Math.ceil(min);
                 max = Math.floor(max);
@@ -54,6 +56,7 @@
                 
                 playPause();
                 sound.setAttribute('src', "muzyka/" + songs[index]);
+                label.innerHTML = songs[index];
                 sound.load();
                 playPause();
             }
@@ -96,6 +99,7 @@
 
                 playPause();
                 sound.setAttribute('src', "muzyka/" + songs[index]);
+                label.innerHTML = songs[index];
                 sound.load();
                 playPause();
             });
@@ -108,6 +112,7 @@
                 var index = getRandomInt(0,4);
                 playPause();
                 sound.setAttribute('src', "muzyka/" + songs[index]);
+                label.innerHTML = songs[index];
                 sound.load();
                 playPause();
             });
