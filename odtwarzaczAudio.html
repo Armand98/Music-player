@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>Muzyka</title>
+    </head>
+    <body>
+        <audio id="dzwiek" autoplay>
+            <source src="">
+        </audio>
+        <div id="custom-seekbar">
+                <span></span>
+        </div>
+        <button id="goback">10s back</button>
+        <button id="playPause">Play</button>
+        <button id="forward">10s forward</button>
+        <br>
+        <button id="prev">Previous Song</button>
+        <button id="random">Random song</button>
+        <button id="next">Next Song</button>
+        <script>
+            var index = 0;
+            var sound = document.getElementById("dzwiek");
+            var songs = ["Bruno-Mars-Grenade.mp3", "Imagine-Dragons-Whatever-It-Takes.mp3", "Otilia-Bilionera.mp3", "Queen-Bohemian-Rhapsody.mp3", "Stevie-Wonder-I-Just-Called-To-Say-I-Love-You.mp3"];
+            sound.setAttribute('src', "muzyka/" + songs[0]);
+            
+            function getRandomInt(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function playPause() {
+                var guzik = document.getElementById("playPause");
+                if (sound.paused) {
+                    sound.play();
+                    guzik.innerHTML = "Pause";
+                }
+                else {
+                    sound.pause();
+                    guzik.innerHTML ="Play";
+                }
+            }
+
+            function next() {
+                if(index == 4) 
+                    index = 0;
+                else
+                    index++;
+                
+                playPause();
+                sound.setAttribute('src', "muzyka/" + songs[index]);
+                sound.load();
+                playPause();
+            }
+
+            sound.ontimeupdate = function() {
+                var percentage = ( sound.currentTime / sound.duration ) * 100;
+                $("#custom-seekbar span").css("width", percentage+"%");
+                if(percentage == 100)
+                {
+                    next();
+                }
+            };
+
+            $("#custom-seekbar").on("click", function(e) {
+                var offset = $(this).offset();
+                var left = (e.pageX - offset.left);
+                var totalWidth = $("#custom-seekbar").width();
+                var percentage = ( left / totalWidth );
+                var soundTime = sound.duration * percentage;
+                sound.currentTime = soundTime;
+            });
+
+            $("#playPause").on("click", function(e) {
+                playPause();
+            });
+
+            $("#goback").on("click", function(e) {
+                sound.currentTime = sound.currentTime-10;
+            });
+
+            $("#forward").on("click", function(e) {
+                sound.currentTime = sound.currentTime+10;
+            });
+
+            $("#prev").on("click", function(e) {
+                if(index == 0) 
+                    index = 4;
+                else
+                    index--;
+
+                playPause();
+                sound.setAttribute('src', "muzyka/" + songs[index]);
+                sound.load();
+                playPause();
+            });
+
+            $("#next").on("click", function(e) {
+                next();
+            });
+
+            $("#random").on("click", function(e) {
+                var index = getRandomInt(0,4);
+                playPause();
+                sound.setAttribute('src', "muzyka/" + songs[index]);
+                sound.load();
+                playPause();
+            });
+        </script>
+    </body>
+</html>
